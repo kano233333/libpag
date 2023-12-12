@@ -459,18 +459,18 @@ export class PAGView {
       this.eventManager.emit('onAnimationEnd', this);
       return true;
     }
-    if (!force && this.repeatedTimes === count && this.playFrame === playFrame) {
-      return false;
-    }
+    // if (!force && this.repeatedTimes === count && this.playFrame === playFrame) {
+    //   return false;
+    // }
     if (this.repeatedTimes < count) {
       this.eventManager.emit('onAnimationRepeat', this);
     }
     this.player.setProgress((this.playTime % duration) / duration);
     const res = await this.flush();
-    if (this.needResetStartTime()) {
-      // Decoding BMP takes too much time and makes the video reader seek repeatedly.
-      this.startTime = this.getNowTime() * 1000 - this.playTime;
-    }
+    // if (this.needResetStartTime()) {
+    //   // Decoding BMP takes too much time and makes the video reader seek repeatedly.
+    //   this.startTime = this.getNowTime() * 1000 - this.playTime;
+    // }
     this.playFrame = playFrame;
     this.repeatedTimes = count;
     return res;
@@ -485,24 +485,14 @@ export class PAGView {
   }
 
   protected setTimer() {
-    if (WORKER) {
-      this.timer = self.setTimeout(() => {
+    this.timer = self.setTimeout(() => {
         this.flushLoop();
-      }, (1 / this.frameRate) * 1000);
-    } else {
-      this.timer = globalThis.requestAnimationFrame(() => {
-        this.flushLoop();
-      });
-    }
+    }, (1 / this.frameRate) * 1000);
   }
 
   protected clearTimer(): void {
     if (this.timer) {
-      if (WORKER) {
         self.clearTimeout(this.timer);
-      } else {
-        globalThis.cancelAnimationFrame(this.timer);
-      }
       this.timer = null;
     }
   }

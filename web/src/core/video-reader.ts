@@ -221,7 +221,7 @@ export class VideoReader {
         }
       };
       window.addEventListener('visibilitychange', visibilityHandle);
-      throw new Error('The play() request was interrupted because the document was hidden!');
+    //   throw new Error('The play() request was interrupted because the document was hidden!');
     }
     await this.videoEl?.play();
   }

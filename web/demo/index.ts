@@ -406,7 +406,9 @@ const createPAGView = async (file: File | ArrayBuffer | Blob) => {
   )}ms`;
   const pagCanvas = document.getElementById('pag') as HTMLCanvasElement;
   const initializedTime = performance.now();
-  pagView = (await PAG.PAGView.init(pagFile, pagCanvas)) as PAGView;
+  pagView = (await PAG.PAGView.init(pagFile, pagCanvas, {
+    useCanvas2D: true
+  })) as PAGView;
   document.getElementById('initialized-time')!.innerText = `PAG View initialized time: ${Math.floor(
     performance.now() - initializedTime,
   )}ms`;
